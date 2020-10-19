@@ -1,6 +1,6 @@
 ﻿namespace Commander.Models.External.Output
 {
-    public class CommandModel
+    public class CommandReadModel
     {
         public int Id { get; set; }
         public string HowTo { get; set; }

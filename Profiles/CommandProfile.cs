@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using System.Collections.Generic;
 using DatabaseModel = Commander.Models.Database;
 using OutputModel = Commander.Models.External.Output;
+using InputModel = Commander.Models.External.Input;
 
 namespace Commander.Profiles
 {
@@ -9,7 +9,8 @@ namespace Commander.Profiles
     {
         public CommandProfile()
         {
-            CreateMap<DatabaseModel.CommandModel, OutputModel.CommandModel>();
-        }
+            CreateMap<DatabaseModel.CommandModel, OutputModel.CommandReadModel>();
+            CreateMap<InputModel.CommandCreateModel, DatabaseModel.CommandModel>();
+      }
     }
 }
