@@ -5,12 +5,17 @@ namespace Commander.Data
 {
     public class HardCodedCommanderRepository : ICommanderRepository
     {
-		public void CreateCommand(CommandModel command)
+		public void Create(CommandModel command)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public CommandModel LookupCommand(int id)
+		public void Delete(CommandModel command)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public CommandModel Lookup(int id)
         {
             return new CommandModel()
             {
@@ -21,7 +26,7 @@ namespace Commander.Data
             };
         }
 
-        public IEnumerable<CommandModel> LookupCommands()
+        public IEnumerable<CommandModel> Lookup()
         {
             return new List<CommandModel>
             {
@@ -32,6 +37,11 @@ namespace Commander.Data
         }
 
 		public bool SaveChanges()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void Update(CommandModel command)
 		{
 			throw new System.NotImplementedException();
 		}

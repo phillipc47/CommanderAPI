@@ -7,8 +7,10 @@ namespace Commander.Data
    {
       bool SaveChanges();
 
-      CommandModel LookupCommand(int id);
-      IEnumerable<CommandModel> LookupCommands();
-      void CreateCommand(CommandModel command);
+      CommandModel Lookup(int id);
+      IEnumerable<CommandModel> Lookup();
+      void Create(CommandModel command);
+      void Update(CommandModel command);
+      void Delete(CommandModel command);
    }
 }

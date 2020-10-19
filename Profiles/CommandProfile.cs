@@ -5,12 +5,14 @@ using InputModel = Commander.Models.External.Input;
 
 namespace Commander.Profiles
 {
-    public class CommandProfile : Profile
-    {
-        public CommandProfile()
-        {
-            CreateMap<DatabaseModel.CommandModel, OutputModel.CommandReadModel>();
-            CreateMap<InputModel.CommandCreateModel, DatabaseModel.CommandModel>();
-      }
-    }
+	public class CommandProfile : Profile
+	{
+		public CommandProfile()
+		{
+			CreateMap<DatabaseModel.CommandModel, OutputModel.CommandReadModel>();
+			CreateMap<InputModel.CommandCreateModel, DatabaseModel.CommandModel>();
+			CreateMap<InputModel.CommandUpdateModel, DatabaseModel.CommandModel>();
+			CreateMap<DatabaseModel.CommandModel, InputModel.CommandUpdateModel>();
+		}
+	}
 }
