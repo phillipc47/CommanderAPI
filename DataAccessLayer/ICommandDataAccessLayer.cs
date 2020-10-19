@@ -8,6 +8,8 @@ namespace Commander.DataAccessLayer
 		IEnumerable<CommandModel> LookupCommands();
 		bool LookupCommand(int id, out CommandModel commandItem);
 		CommandModel Create(CommandModel commandItem);
+		void Update(CommandModel command);
+		void Delete(CommandModel command);
 		bool Save();
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Commander.DataAccessLayer
 {
+	//TODO: Revisit from an architecture perspective; think the DAL + Repository is too much unnecessary abstraction for now
 	public class CommandDAL : ICommandDataAccessLayer
 	{
 		private readonly ICommanderRepository _repository;
@@ -15,13 +16,13 @@ namespace Commander.DataAccessLayer
 
 		public IEnumerable<CommandModel> LookupCommands()
 		{
-			var commandItems = _repository.LookupCommands();
+			var commandItems = _repository.Lookup();
 			return commandItems;
 		}
 
 		public bool LookupCommand(int id, out CommandModel commandItem)
 		{
-			commandItem = _repository.LookupCommand(id);
+			commandItem = _repository.Lookup(id);
 
 			if (commandItem == null)
 			{
@@ -30,11 +31,21 @@ namespace Commander.DataAccessLayer
 			return true;
 		}
 
-		public CommandModel Create(CommandModel commandItem)
+		public CommandModel Create(CommandModel command)
 		{
-			_repository.CreateCommand(commandItem);
+			_repository.Create(command);
 
-			return commandItem;
+			return command;
+		}
+
+		public void Update(CommandModel command)
+		{
+			_repository.Update(command);
+		}
+
+		public void Delete(CommandModel command)
+		{
+			_repository.Delete(command);
 		}
 
 		public bool Save()

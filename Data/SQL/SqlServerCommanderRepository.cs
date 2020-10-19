@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Commander.Data.SQL
 {
@@ -15,7 +14,7 @@ namespace Commander.Data.SQL
             _context = context;
         }
 
-		public void CreateCommand(CommandModel command)
+		public void Create(CommandModel command)
 		{
          if( command == null )
 			{
@@ -25,12 +24,22 @@ namespace Commander.Data.SQL
          _context.Add(command);
 		}
 
-		public CommandModel LookupCommand(int id)
+		public void Delete(CommandModel command)
+		{
+         if( command == null )
+			{
+            throw new ArgumentNullException(nameof(command));
+			}
+
+         _context.Remove(command);
+		}
+
+		public CommandModel Lookup(int id)
         {
             return _context.Commands.SingleOrDefault(_ => _.Id == id);
         }
 
-        public IEnumerable<CommandModel> LookupCommands()
+        public IEnumerable<CommandModel> Lookup()
         {
             return _context.Commands.ToList();
         }
@@ -38,6 +47,11 @@ namespace Commander.Data.SQL
 		public bool SaveChanges()
 		{
          return _context.SaveChanges() >= 0;
+		}
+
+		public void Update(CommandModel command)
+		{
+         // Do Nothing -- EF approach, grab the model, change it, save it
 		}
 	}
 }
