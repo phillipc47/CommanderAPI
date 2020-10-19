@@ -1,12 +1,16 @@
-﻿using Commander.Models;
-using Commander.Models.Database;
+﻿using Commander.Models.Database;
 using System.Collections.Generic;
 
 namespace Commander.Data
 {
     public class HardCodedCommanderRepository : ICommanderRepository
     {
-        public CommandModel LookupCommand(int id)
+		public void CreateCommand(CommandModel command)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public CommandModel LookupCommand(int id)
         {
             return new CommandModel()
             {
@@ -26,5 +30,10 @@ namespace Commander.Data
                 new CommandModel {Id = 2, HowTo = "Install Cowsay", Line = "yum install cowsay", Platform = "Bash"}
             };
         }
-    }
+
+		public bool SaveChanges()
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }

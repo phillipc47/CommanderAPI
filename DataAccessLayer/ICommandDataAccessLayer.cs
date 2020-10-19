@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 namespace Commander.DataAccessLayer
 {
-    public interface ICommandDataAccessLayer
-    {
-        IEnumerable<CommandModel> LookupCommands();
-        bool LookupCommand(int id, out CommandModel commandItem);
-    }
+	public interface ICommandDataAccessLayer
+	{
+		IEnumerable<CommandModel> LookupCommands();
+		bool LookupCommand(int id, out CommandModel commandItem);
+		CommandModel Create(CommandModel commandItem);
+		bool Save();
+	}
 }

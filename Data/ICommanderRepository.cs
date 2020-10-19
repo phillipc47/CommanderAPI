@@ -1,12 +1,14 @@
-﻿using Commander.Models;
-using Commander.Models.Database;
+﻿using Commander.Models.Database;
 using System.Collections.Generic;
 
 namespace Commander.Data
 {
-    public interface ICommanderRepository
-    {
-        IEnumerable<CommandModel> LookupCommands();
-        CommandModel LookupCommand(int id);
-    }
+   public interface ICommanderRepository
+   {
+      bool SaveChanges();
+
+      CommandModel LookupCommand(int id);
+      IEnumerable<CommandModel> LookupCommands();
+      void CreateCommand(CommandModel command);
+   }
 }
