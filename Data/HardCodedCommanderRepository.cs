@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace Commander.Data
 {
-    public class HardCodedCommanderRepository : ICommanderRepository
-    {
+	public class HardCodedCommanderRepository : ICommanderRepository
+	{
+		private const int BashCategoryId = 12;
+
 		public void Create(CommandModel command)
 		{
 			throw new System.NotImplementedException();
@@ -16,25 +18,25 @@ namespace Commander.Data
 		}
 
 		public CommandModel Lookup(int id)
-        {
-            return new CommandModel()
-            {
-                Id = 0,
-                HowTo = "Make a Directory",
-                Line = "mkdir <directory name>",
-                Platform = "Bash"
-            };
-        }
+		{
+			return new CommandModel()
+			{
+				Id = 0,
+				HowTo = "Make a Directory",
+				Line = "mkdir <directory name>",
+				CategoryId = BashCategoryId
+			};
+		}
+		public IEnumerable<CommandModel> Lookup()
 
-        public IEnumerable<CommandModel> Lookup()
-        {
-            return new List<CommandModel>
-            {
-                new CommandModel {Id = 0, HowTo = "Make a Directory", Line = "mkdir <directory name>", Platform = "Bash" },
-                new CommandModel {Id = 1, HowTo = "Install Fortune", Line = "apt-get install fortune", Platform = "Bash" },
-                new CommandModel {Id = 2, HowTo = "Install Cowsay", Line = "yum install cowsay", Platform = "Bash"}
-            };
-        }
+		{
+			return new List<CommandModel>
+				{
+					 new CommandModel {Id = 0, HowTo = "Make a Directory", Line = "mkdir <directory name>", CategoryId = BashCategoryId },
+					 new CommandModel {Id = 1, HowTo = "Install Fortune", Line = "apt-get install fortune", CategoryId = BashCategoryId },
+					 new CommandModel {Id = 2, HowTo = "Install Cowsay", Line = "yum install cowsay", CategoryId = BashCategoryId }
+				};
+		}
 
 		public bool SaveChanges()
 		{

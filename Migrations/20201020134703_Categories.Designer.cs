@@ -3,14 +3,16 @@ using Commander.Data.SQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Commander.Migrations
 {
     [DbContext(typeof(CommanderContext))]
-    partial class CommanderContextModelSnapshot : ModelSnapshot
+    [Migration("20201020134703_Categories")]
+    partial class Categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,18 +35,6 @@ namespace Commander.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "EF Core"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "User Secrets"
-                        });
                 });
 
             modelBuilder.Entity("Commander.Models.Database.CommandModel", b =>
@@ -66,41 +56,15 @@ namespace Commander.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Commands");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            HowTo = "Create Migrations",
-                            Line = "dotnet ef migrations add <Name>"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            HowTo = "Run Migrations",
-                            Line = "dotnet ef database update"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            HowTo = "Create User Secret",
-                            Line = "dotnet user-secrets set <Key> <Value>"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 2,
-                            HowTo = "List All User Secret",
-                            Line = "dotnet user-secrets list"
-                        });
                 });
 
             modelBuilder.Entity("Commander.Models.Database.CommandModel", b =>
