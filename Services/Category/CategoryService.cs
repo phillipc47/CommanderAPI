@@ -6,6 +6,7 @@ using Output = Commander.Models.External.Output;
 using Input = Commander.Models.External.Input.Category;
 using Database = Commander.Models.Database;
 using Microsoft.Extensions.Logging;
+using Commander.Models.External.Output.Category;
 
 namespace Commander.Services.Category
 {
@@ -23,7 +24,7 @@ namespace Commander.Services.Category
 			_logger = logger;
 		}
 
-		public bool Add(Input.CategoryCreateModel category, out Output.CategoryReadModel createdCategory)
+		public bool Add(Input.CategoryCreateModel category, out CategoryReadModel createdCategory)
 		{
 			var commandDatabaseModel = _mapper.Map<Database.CategoryModel>(category);
 
@@ -40,17 +41,17 @@ namespace Commander.Services.Category
 				return false;
 			}
 
-			createdCategory = _mapper.Map<Output.CategoryReadModel>(commandDatabaseModel);
+			createdCategory = _mapper.Map<CategoryReadModel>(commandDatabaseModel);
 			return true;
 		}
 
-		public IEnumerable<Output.CategoryReadModel> LookupCategories()
+		public IEnumerable<CategoryReadModel> LookupCategories()
 		{
 			var categories = _repository.LookupCategories();
-			return _mapper.Map<IEnumerable<Output.CategoryReadModel>>(categories);
+			return _mapper.Map<IEnumerable<CategoryReadModel>>(categories);
 		}
 
-		public bool LookupCategory( int id, out Output.CategoryReadModel category )
+		public bool LookupCategory( int id, out CategoryReadModel category )
 		{
 			var foundCategory = _repository.LookupCategory(id);
 
@@ -60,11 +61,11 @@ namespace Commander.Services.Category
 				return false;
 			}
 
-			category = _mapper.Map<Output.CategoryReadModel>(foundCategory);
+			category = _mapper.Map<CategoryReadModel>(foundCategory);
 			return true;
 		}
 
-		public bool Delete(int id, out Output.CategoryReadModel deletedCategory)
+		public bool Delete(int id, out CategoryReadModel deletedCategory)
 		{
 			var foundCategory = _repository.LookupCategory(id);
 			if (foundCategory == null )
@@ -76,7 +77,7 @@ namespace Commander.Services.Category
 			_repository.Delete(foundCategory);
 			_repository.SaveChanges();
 
-			deletedCategory = _mapper.Map<Output.CategoryReadModel>(foundCategory);
+			deletedCategory = _mapper.Map<CategoryReadModel>(foundCategory);
 			return true;
 		}
 

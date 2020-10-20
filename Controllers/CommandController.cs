@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Output = Commander.Models.External.Output;
 using Input = Commander.Models.External.Input;
-using Commander.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
-using Commander.Models.External.Input;
 using Commander.DataAccessLayer;
 using AutoMapper;
+using Commander.Services.Command;
+using Commander.Models.External.Input.Command;
+using Commander.Models.External.Output.Command;
 
 namespace Commander.Controllers
 {
@@ -28,7 +29,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<Output.CommandReadModel>> LookupCommands()
+		public ActionResult<IEnumerable<CommandReadModel>> LookupCommands()
 		{
 			var commandItems = _service.LookupCommands();
 
@@ -36,7 +37,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet("{id}", Name="LookupCommand")]
-		public ActionResult<Output.CommandReadModel> LookupCommand(int id)
+		public ActionResult<CommandReadModel> LookupCommand(int id)
 		{
 			if (_service.LookupCommand(id, out var command))
 			{
@@ -47,7 +48,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult<Output.CommandReadModel> AddCommand(Input.CommandCreateModel command)
+		public ActionResult<CommandReadModel> AddCommand(CommandCreateModel command)
 		{
 			//Basic Validatation happens through Annotations on Create Command Model
 
@@ -63,7 +64,7 @@ namespace Commander.Controllers
 
 		// Yep, older, larger over the wire, can be error prone based upon size of object, but for this entity, it's a decent fit
 		[HttpPut("{id}")]
-		public ActionResult UpdateCommand(int id, Input.CommandUpdateModel commandUpdateModel)
+		public ActionResult UpdateCommand(int id, CommandUpdateModel commandUpdateModel)
 		{
 			if( !_service.Update(id, commandUpdateModel) )
 			{

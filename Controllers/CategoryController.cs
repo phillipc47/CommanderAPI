@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Output = Commander.Models.External.Output;
 using Input = Commander.Models.External.Input.Category;
 using Commander.Services.Category;
+using Commander.Models.External.Output.Category;
+using Commander.Models.External.Output.Command;
 
 namespace Commander.Controllers
 {
@@ -18,7 +20,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<Output.CategoryReadModel>> LookupCategories()
+		public ActionResult<IEnumerable<CategoryReadModel>> LookupCategories()
 		{
 			var commandItems = _service.LookupCategories();
 
@@ -26,7 +28,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet("{id}", Name = "LookupCategory")]
-		public ActionResult<Output.CommandReadModel> LookupCategory(int id)
+		public ActionResult<CommandReadModel> LookupCategory(int id)
 		{
 			if (_service.LookupCategory(id, out var command))
 			{
@@ -37,7 +39,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult<Output.CategoryReadModel> Add(Input.CategoryCreateModel category)
+		public ActionResult<CategoryReadModel> Add(Input.CategoryCreateModel category)
 		{
 			//Basic Validatation happens through Annotations on Create Command Model
 

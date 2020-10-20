@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Commander.Models.External.Input
+namespace Commander.Models.External.Input.Command
 {
 	public abstract class CommandModifyModelBase
 	{

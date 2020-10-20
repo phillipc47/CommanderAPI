@@ -1,4 +1,4 @@
-﻿namespace Commander.Models.External.Output
+﻿namespace Commander.Models.External.Output.Command
 {
 	public class CommandReadModel
 	{

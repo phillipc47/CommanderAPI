@@ -6,8 +6,10 @@ using Database = Commander.Models.Database;
 using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Logging;
+using Commander.Models.External.Input.Command;
+using Commander.Models.External.Output.Command;
 
-namespace Commander.Services
+namespace Commander.Services.Command
 {
 	public class CommandService : ICommandService
 	{
@@ -22,14 +24,14 @@ namespace Commander.Services
 			_logger = logger;
 		}
 
-		public IEnumerable<Output.CommandReadModel> LookupCommands()
+		public IEnumerable<CommandReadModel> LookupCommands()
 		{
 			var commandItems = _dataAccessLayer.LookupCommands();
 
-			return _mapper.Map<IEnumerable<Output.CommandReadModel>>(commandItems);
+			return _mapper.Map<IEnumerable<CommandReadModel>>(commandItems);
 		}
 
-		public bool LookupCommand(int id, out Output.CommandReadModel model)
+		public bool LookupCommand(int id, out CommandReadModel model)
 		{
 			var returnValue = _dataAccessLayer.LookupCommand(id, out var databaseModel);
 
@@ -39,11 +41,11 @@ namespace Commander.Services
 				return false;
 			}
 
-			model = _mapper.Map<Output.CommandReadModel>(databaseModel);
+			model = _mapper.Map<CommandReadModel>(databaseModel);
 			return true;
 		}
 
-		public bool Add(Input.CommandCreateModel createModel, out Output.CommandReadModel createdCommand)
+		public bool Add(CommandCreateModel createModel, out CommandReadModel createdCommand)
 		{
 			var commandDatabaseModel = _mapper.Map<Database.CommandModel>(createModel);
 
@@ -52,7 +54,7 @@ namespace Commander.Services
 				_dataAccessLayer.Create(commandDatabaseModel);
 				_dataAccessLayer.Save();
 			}
-			catch(Exception exception)
+			catch (Exception exception)
 			{
 				//TODO: Beef this up for real production environment
 				//Poor Man's Logging until full logging implemented
@@ -61,11 +63,11 @@ namespace Commander.Services
 				return false;
 			}
 
-			createdCommand = _mapper.Map<Output.CommandReadModel>(commandDatabaseModel);
+			createdCommand = _mapper.Map<CommandReadModel>(commandDatabaseModel);
 			return true;
 		}
 
-		public bool Update(int id, Input.CommandUpdateModel commandUpdateModel)
+		public bool Update(int id, CommandUpdateModel commandUpdateModel)
 		{
 			if (!_dataAccessLayer.LookupCommand(id, out var foundCommand))
 			{
@@ -79,7 +81,7 @@ namespace Commander.Services
 			return true;
 		}
 
-		public bool Delete(int id, out Output.CommandReadModel deletedCommand)
+		public bool Delete(int id, out CommandReadModel deletedCommand)
 		{
 			if (!_dataAccessLayer.LookupCommand(id, out var foundCommand))
 			{
@@ -90,7 +92,7 @@ namespace Commander.Services
 			_dataAccessLayer.Delete(foundCommand);
 			_dataAccessLayer.Save();
 
-			deletedCommand = _mapper.Map<Output.CommandReadModel>(foundCommand);
+			deletedCommand = _mapper.Map<CommandReadModel>(foundCommand);
 			return true;
 		}
 	}
