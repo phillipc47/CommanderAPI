@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Commander.Models.Database
 {
-	public class CommandCategoryModel
+	public class CategoryModel
 	{
       [Key]
       public int Id { get; set; }
@@ -12,6 +12,6 @@ namespace Commander.Models.Database
       [MaxLength(250)]
       public string Description { get; set; }
 
-      public List<CommandModel> Commands { get; set; }
+      public virtual List<CommandModel> Commands { get; set; }
    }
 }

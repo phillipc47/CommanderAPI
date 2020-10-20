@@ -7,10 +7,18 @@ namespace Commander.Data
    {
       bool SaveChanges();
 
-      CommandModel Lookup(int id);
-      IEnumerable<CommandModel> Lookup();
+      CommandModel LookupCommand(int id);
+      IEnumerable<CommandModel> LookupCommands();
+
+      CategoryModel LookupCategory(int id);
+      IEnumerable<CategoryModel> LookupCategories();
+
+      void Create(CategoryModel category);
+
       void Create(CommandModel command);
       void Update(CommandModel command);
+      void Update(CategoryModel category);
       void Delete(CommandModel command);
+      void Delete(CategoryModel category);
    }
 }

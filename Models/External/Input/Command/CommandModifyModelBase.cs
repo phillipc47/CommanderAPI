@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Commander.Models.External.Input
+namespace Commander.Models.External.Input.Command
 {
-	public class CommandModifyModelBase
+	public abstract class CommandModifyModelBase
 	{
 		[Required]
 		[MaxLength(250)]

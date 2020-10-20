@@ -16,13 +16,13 @@ namespace Commander.DataAccessLayer
 
 		public IEnumerable<CommandModel> LookupCommands()
 		{
-			var commandItems = _repository.Lookup();
+			var commandItems = _repository.LookupCommands();
 			return commandItems;
 		}
 
 		public bool LookupCommand(int id, out CommandModel commandItem)
 		{
-			commandItem = _repository.Lookup(id);
+			commandItem = _repository.LookupCommand(id);
 
 			if (commandItem == null)
 			{

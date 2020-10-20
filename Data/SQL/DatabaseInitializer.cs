@@ -23,7 +23,7 @@ namespace Commander.Data.SQL
 			AddCommand(modelBuilder, "List All User Secret", "dotnet user-secrets list", userSecretsCategory);
 		}
 
-		private static CommandModel AddCommand(ModelBuilder modelBuilder, string howTo, string line, CommandCategoryModel category)
+		private static CommandModel AddCommand(ModelBuilder modelBuilder, string howTo, string line, CategoryModel category)
 		{
 			var command = new CommandModel
 			{
@@ -39,15 +39,15 @@ namespace Commander.Data.SQL
 			return command;
 		}
 
-		private static CommandCategoryModel AddCategory(ModelBuilder modelBuilder, string description)
+		private static CategoryModel AddCategory(ModelBuilder modelBuilder, string description)
 		{
-			var category = new CommandCategoryModel
+			var category = new CategoryModel
 			{
 				Id = IdentityValues.CategoryId++,
 				Description = $"{description}"
 			};
 
-			modelBuilder.Entity<CommandCategoryModel>().HasData(category);
+			modelBuilder.Entity<CategoryModel>().HasData(category);
 
 			return category;
 		}

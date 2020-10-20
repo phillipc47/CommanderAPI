@@ -12,12 +12,32 @@ namespace Commander.Data
 			throw new System.NotImplementedException();
 		}
 
+		public void Create(CategoryModel category)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public void Delete(CommandModel command)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public CommandModel Lookup(int id)
+		public void Delete(CategoryModel category)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public IEnumerable<CategoryModel> LookupCategories()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public CategoryModel LookupCategory(int id)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public CommandModel LookupCommand(int id)
 		{
 			return new CommandModel()
 			{
@@ -27,7 +47,7 @@ namespace Commander.Data
 				CategoryId = BashCategoryId
 			};
 		}
-		public IEnumerable<CommandModel> Lookup()
+		public IEnumerable<CommandModel> LookupCommands()
 
 		{
 			return new List<CommandModel>
@@ -44,6 +64,11 @@ namespace Commander.Data
 		}
 
 		public void Update(CommandModel command)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public void Update(CategoryModel category)
 		{
 			throw new System.NotImplementedException();
 		}
