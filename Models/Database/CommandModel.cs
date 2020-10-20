@@ -8,6 +8,7 @@ namespace Commander.Models.Database
 		[Key]
 		public int Id { get; set; }
 
+		[Required]
 		[ForeignKey("CommandCategory")]
 		public int CategoryId { get; set; }
 		public CommandCategoryModel Category { get; set; }
@@ -18,8 +19,5 @@ namespace Commander.Models.Database
 
 		[Required]
 		public string Line { get; set; }
-
-		[Required]
-		public string Platform { get; set; }
 	}
 }

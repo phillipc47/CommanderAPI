@@ -20,6 +20,8 @@ namespace Commander.Data.SQL
 
 			modelBuilder.Entity<CommandCategoryModel>()
 				.HasMany(_ => _.Commands);
+
+			DatabaseInitializer.Seed(modelBuilder);
 		}
 	}
 }
