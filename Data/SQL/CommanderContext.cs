@@ -11,14 +11,14 @@ namespace Commander.Data.SQL
 		}
 
 		public DbSet<CommandModel> Commands { get; set; }
-		public DbSet<CommandCategoryModel> Categories { get; set; }
+		public DbSet<CategoryModel> Categories { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<CommandModel>()
 				.HasOne(_ => _.Category);
 
-			modelBuilder.Entity<CommandCategoryModel>()
+			modelBuilder.Entity<CategoryModel>()
 				.HasMany(_ => _.Commands);
 
 			DatabaseInitializer.Seed(modelBuilder);

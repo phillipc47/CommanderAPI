@@ -6,8 +6,6 @@ using Database = Commander.Models.Database;
 using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Logging;
-using Commander.Models.External.Input;
-using Commander.Models.External.Output;
 
 namespace Commander.Services
 {
@@ -67,7 +65,7 @@ namespace Commander.Services
 			return true;
 		}
 
-		public bool Update(int id, CommandUpdateModel commandUpdateModel)
+		public bool Update(int id, Input.CommandUpdateModel commandUpdateModel)
 		{
 			if (!_dataAccessLayer.LookupCommand(id, out var foundCommand))
 			{
@@ -81,7 +79,7 @@ namespace Commander.Services
 			return true;
 		}
 
-		public bool Delete(int id, out CommandReadModel deletedCommand)
+		public bool Delete(int id, out Output.CommandReadModel deletedCommand)
 		{
 			if (!_dataAccessLayer.LookupCommand(id, out var foundCommand))
 			{
@@ -92,7 +90,7 @@ namespace Commander.Services
 			_dataAccessLayer.Delete(foundCommand);
 			_dataAccessLayer.Save();
 
-			deletedCommand = _mapper.Map<CommandReadModel>(foundCommand);
+			deletedCommand = _mapper.Map<Output.CommandReadModel>(foundCommand);
 			return true;
 		}
 	}

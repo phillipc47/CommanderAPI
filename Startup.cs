@@ -4,6 +4,7 @@ using Commander.Data;
 using Commander.Data.SQL;
 using Commander.DataAccessLayer;
 using Commander.Services;
+using Commander.Services.Category;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
@@ -39,6 +40,7 @@ namespace Commander
 
 			// Services
 			services.AddScoped<ICommandService, CommandService>();
+			services.AddScoped<ICategoryService, CategoryService>();
 
 			// DAL
 			services.AddScoped<ICommandDataAccessLayer, CommandDAL>();
@@ -50,7 +52,9 @@ namespace Commander
 			var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("CommanderConnection"));
 			builder.Password = Configuration["CommanderDatabasePassword"];
 
-			services.AddDbContext<CommanderContext>(options => options.UseSqlServer(builder.ConnectionString));
+			services.AddDbContext<CommanderContext>(
+				options => options.UseLazyLoadingProxies()
+					.UseSqlServer(builder.ConnectionString));
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -11,7 +11,7 @@ namespace Commander.Models.Database
 		[Required]
 		[ForeignKey("CommandCategory")]
 		public int CategoryId { get; set; }
-		public CommandCategoryModel Category { get; set; }
+		public virtual CategoryModel Category { get; set; }
 
 		[Required]
 		[MaxLength(250)]

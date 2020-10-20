@@ -9,7 +9,11 @@ namespace Commander.Profiles
 	{
 		public CommandProfile()
 		{
-			CreateMap<DatabaseModel.CommandModel, OutputModel.CommandReadModel>();
+			CreateMap<DatabaseModel.CommandModel, OutputModel.CommandReadModel>()
+				.ForMember( destination => destination.Category, 
+								option => option.MapFrom(source => source.Category.Description));
+
+
 			CreateMap<InputModel.CommandCreateModel, DatabaseModel.CommandModel>();
 			CreateMap<InputModel.CommandUpdateModel, DatabaseModel.CommandModel>();
 			CreateMap<DatabaseModel.CommandModel, InputModel.CommandUpdateModel>();
