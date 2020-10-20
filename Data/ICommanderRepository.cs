@@ -17,6 +17,7 @@ namespace Commander.Data
 
       void Create(CommandModel command);
       void Update(CommandModel command);
+      void Update(CategoryModel category);
       void Delete(CommandModel command);
       void Delete(CategoryModel category);
    }

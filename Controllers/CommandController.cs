@@ -12,15 +12,15 @@ namespace Commander.Controllers
 {
 	//TODO: I know, right now the id is database specific and it needs to be entity specific (as in uri)
 
-	[Route("api/[controller]")]
+	[Route("api/commands")]
 	[ApiController]
-	public class CommandsController : ControllerBase
+	public class CommandController : ControllerBase
 	{
 		private readonly ICommandService _service;
 		private readonly ICommandDataAccessLayer _dataAccessLayer;
 		private readonly IMapper _mapper;
 
-		public CommandsController(ICommandService service, ICommandDataAccessLayer dataAccessLayer, IMapper mapper)
+		public CommandController(ICommandService service, ICommandDataAccessLayer dataAccessLayer, IMapper mapper)
 		{
 			_service = service;
 			_dataAccessLayer = dataAccessLayer;

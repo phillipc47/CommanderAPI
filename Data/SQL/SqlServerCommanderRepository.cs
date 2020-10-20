@@ -84,5 +84,15 @@ namespace Commander.Data.SQL
 		{
          // Do Nothing -- EF approach, grab the model, change it, save it
 		}
+
+		public void Update(CategoryModel category)
+		{
+			if( category == null )
+			{
+				throw new ArgumentNullException();
+			}
+
+			_context.Update(category);
+		}
 	}
 }

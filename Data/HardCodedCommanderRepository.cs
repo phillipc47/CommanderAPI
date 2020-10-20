@@ -67,5 +67,10 @@ namespace Commander.Data
 		{
 			throw new System.NotImplementedException();
 		}
+
+		public void Update(CategoryModel category)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

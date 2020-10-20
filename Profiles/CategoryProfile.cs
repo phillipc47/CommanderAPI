@@ -2,6 +2,7 @@
 using DatabaseModel = Commander.Models.Database;
 using OutputModel = Commander.Models.External.Output;
 using InputModel = Commander.Models.External.Input;
+using Commander.Models.External.Input.Category;
 
 namespace Commander.Profiles
 {
@@ -10,7 +11,7 @@ namespace Commander.Profiles
 		public CategoryProfile()
 		{
 			CreateMap<DatabaseModel.CategoryModel, OutputModel.CategoryReadModel>();
-			CreateMap<InputModel.CategoryCreateModel, DatabaseModel.CategoryModel>();
+			CreateMap<CategoryCreateModel, DatabaseModel.CategoryModel>();
 		}
 	}
 }

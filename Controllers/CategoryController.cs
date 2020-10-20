@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Output = Commander.Models.External.Output;
-using Input = Commander.Models.External.Input;
+using Input = Commander.Models.External.Input.Category;
 using Commander.Services.Category;
 
 namespace Commander.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/categories")]
 	[ApiController]
-	public class CategoriesController : ControllerBase
+	public class CategoryController : ControllerBase
 	{
 		private readonly ICategoryService _service;
 
-		public CategoriesController(ICategoryService service)
+		public CategoryController(ICategoryService service)
 		{
 			_service = service;
 		}
@@ -37,7 +37,7 @@ namespace Commander.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult<Output.CategoryReadModel> AddCommand(Input.CategoryCreateModel category)
+		public ActionResult<Output.CategoryReadModel> Add(Input.CategoryCreateModel category)
 		{
 			//Basic Validatation happens through Annotations on Create Command Model
 
@@ -61,5 +61,15 @@ namespace Commander.Controllers
 			return Ok(deletedCommand);
 		}
 
+		[HttpPut("{id}")]
+		public ActionResult Update(int id, Input.CategoryUpdateModel model)
+		{
+			if (!_service.Update(id, model))
+			{
+				return NotFound();
+			}
+
+			return NoContent();
+		}
 	}
 }

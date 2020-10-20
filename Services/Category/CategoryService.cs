@@ -3,7 +3,7 @@ using AutoMapper;
 using Commander.Data;
 using System.Collections.Generic;
 using Output = Commander.Models.External.Output;
-using Input = Commander.Models.External.Input;
+using Input = Commander.Models.External.Input.Category;
 using Database = Commander.Models.Database;
 using Microsoft.Extensions.Logging;
 
@@ -77,6 +77,21 @@ namespace Commander.Services.Category
 			_repository.SaveChanges();
 
 			deletedCategory = _mapper.Map<Output.CategoryReadModel>(foundCategory);
+			return true;
+		}
+
+		public bool Update(int id, Input.CategoryUpdateModel category)
+		{
+			var foundCategory = _repository.LookupCategory(id);
+			if (foundCategory == null)
+			{
+				return false;
+			}
+
+			_mapper.Map(category, foundCategory);
+			_repository.Update(foundCategory);
+			_repository.SaveChanges();
+
 			return true;
 		}
 	}

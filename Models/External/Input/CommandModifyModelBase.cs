@@ -2,7 +2,7 @@
 
 namespace Commander.Models.External.Input
 {
-	public class CommandModifyModelBase
+	public abstract class CommandModifyModelBase
 	{
 		[Required]
 		[MaxLength(250)]
