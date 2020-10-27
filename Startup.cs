@@ -1,10 +1,4 @@
-using System;
-using AutoMapper;
-using Commander.Data;
 using Commander.Data.SQL;
-using Commander.DataAccessLayer;
-using Commander.Services.Category;
-using Commander.Services.Command;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
@@ -13,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using Commander.Initializers;
 
 namespace Commander
 {
@@ -28,23 +23,19 @@ namespace Commander
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			SwaggerInitializer.Configure(services);
+
 			SetupCommanderDatabase(services);
 
 			services.AddControllers().AddNewtonsoftJson(serializer => serializer.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
-			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			AutoMapperInitializer.Configure(services);
 
-			// Repository
-			//services.AddScoped<ICommanderRepository, HardCodedCommanderRepository>();
-			services.AddScoped<ICommanderRepository, SqlServerCommanderRepository>();
+			RepositoryInitializer.Configure(services);
 
-			// Services
-			services.AddScoped<ICommandService, CommandService>();
-			services.AddScoped<ICategoryService, CategoryService>();
+			BusinessServiceInitializer.Configure(services);
 
-			// DAL
-			services.AddScoped<ICommandDataAccessLayer, CommandDAL>();
-
+			DALInitializer.Configure(services);
 		}
 
 		private void SetupCommanderDatabase(IServiceCollection services)
@@ -63,6 +54,8 @@ namespace Commander
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			SwaggerInitializer.Configure(app);
 
 			app.UseHttpsRedirection();
 
