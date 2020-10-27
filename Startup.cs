@@ -1,10 +1,4 @@
-using System;
-using AutoMapper;
-using Commander.Data;
 using Commander.Data.SQL;
-using Commander.DataAccessLayer;
-using Commander.Services.Category;
-using Commander.Services.Command;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
@@ -35,28 +29,13 @@ namespace Commander
 
 			services.AddControllers().AddNewtonsoftJson(serializer => serializer.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
-			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			AutoMapperInitializer.Configure(services);
 
-			// Repository
-			//services.AddScoped<ICommanderRepository, HardCodedCommanderRepository>();
-			services.AddScoped<ICommanderRepository, SqlServerCommanderRepository>();
+			RepositoryInitializer.Configure(services);
 
-			// Services
-			services.AddScoped<ICommandService, CommandService>();
-			services.AddScoped<ICategoryService, CategoryService>();
+			BusinessServiceInitializer.Configure(services);
 
-			// DAL
-			services.AddScoped<ICommandDataAccessLayer, CommandDAL>();
-
-		}
-
-		private void SetupSwagger(IServiceCollection services)
-		{
-			services.AddSwaggerGen(options =>
-				{
-					options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Commander API", Version = "v1" });
-				}
-			);
+			DALInitializer.Configure(services);
 		}
 
 		private void SetupCommanderDatabase(IServiceCollection services)
