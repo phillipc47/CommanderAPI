@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using Commander.Initializers;
 
 namespace Commander
 {
@@ -28,6 +29,8 @@ namespace Commander
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			SwaggerInitializer.Configure(services);
+
 			SetupCommanderDatabase(services);
 
 			services.AddControllers().AddNewtonsoftJson(serializer => serializer.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
@@ -47,6 +50,15 @@ namespace Commander
 
 		}
 
+		private void SetupSwagger(IServiceCollection services)
+		{
+			services.AddSwaggerGen(options =>
+				{
+					options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Commander API", Version = "v1" });
+				}
+			);
+		}
+
 		private void SetupCommanderDatabase(IServiceCollection services)
 		{
 			var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("CommanderConnection"));
@@ -63,6 +75,8 @@ namespace Commander
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			SwaggerInitializer.Configure(app);
 
 			app.UseHttpsRedirection();
 
