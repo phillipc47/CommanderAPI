@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using Output = Commander.Models.External.Output;
-using Input = Commander.Models.External.Input;
+﻿using System.Net;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Commander.DataAccessLayer;
 using AutoMapper;
 using Commander.Services.Command;
-using Commander.Models.External.Input.Command;
-using Commander.Models.External.Output.Command;
+using Swashbuckle.AspNetCore.Annotations;
+using Input = Commander.Models.External.Input.Command;
+using Output = Commander.Models.External.Output.Command;
 
 namespace Commander.Controllers
 {
 	//TODO: I know, right now the id is database specific and it needs to be entity specific (as in uri)
 
+	[Produces("application/json")]
 	[Route("api/commands")]
 	[ApiController]
 	public class CommandController : ControllerBase
@@ -29,15 +30,20 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<CommandReadModel>> LookupCommands()
+		[SwaggerOperation("Retrieve all Stored Commands")]
+		[SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<Output.CommandReadModel>))]
+		public ActionResult<IEnumerable<Output.CommandReadModel>> LookupCommands()
 		{
 			var commandItems = _service.LookupCommands();
 
 			return Ok(commandItems);
 		}
 
-		[HttpGet("{id}", Name="LookupCommand")]
-		public ActionResult<CommandReadModel> LookupCommand(int id)
+		[HttpGet("{id}", Name = "LookupCommand")]
+		[SwaggerOperation("Retrieve a single command")]
+		[SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Output.CommandReadModel))]
+		[SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Returned when the specified command id is not located")]
+		public ActionResult<Output.CommandReadModel> LookupCommand(int id)
 		{
 			if (_service.LookupCommand(id, out var command))
 			{
@@ -48,11 +54,18 @@ namespace Commander.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult<CommandReadModel> AddCommand(CommandCreateModel command)
+		[SwaggerOperation("Creates a new command")]
+		[SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Returned when the create model is not valid")]
+		//TODO: Return Ok with Location
+		[SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Model is created -- location in header")]
+		public ActionResult<Output.CommandReadModel> AddCommand(Input.CommandCreateModel command)
 		{
-			//Basic Validatation happens through Annotations on Create Command Model
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-			if( !_service.Add(command, out var createdCommand) )
+			if (!_service.Add(command, out var createdCommand))
 			{
 				//TODO: Wouldnt do this for real in production environment, but, until we get round to it
 				return new NoContentResult();
@@ -64,9 +77,18 @@ namespace Commander.Controllers
 
 		// Yep, older, larger over the wire, can be error prone based upon size of object, but for this entity, it's a decent fit
 		[HttpPut("{id}")]
-		public ActionResult UpdateCommand(int id, CommandUpdateModel commandUpdateModel)
+		[SwaggerOperation("Update an existing command")]
+		[SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Returned when the update model is not valid")]
+		[SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Returned when the command to update could not be located by the specified identifier")]
+		[SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Model is updated")]
+		public ActionResult UpdateCommand(int id, Input.CommandUpdateModel commandUpdateModel)
 		{
-			if( !_service.Update(id, commandUpdateModel) )
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			if (!_service.Update(id, commandUpdateModel))
 			{
 				return NotFound();
 			}
@@ -76,19 +98,23 @@ namespace Commander.Controllers
 
 		//TODO: Do not like the direct data access layer usage from this level; future iteration 
 		[HttpPatch("{id}")]
-		public ActionResult PatchCommand(int id, JsonPatchDocument<CommandUpdateModel> patchDocument)
+		[SwaggerOperation("Patch an existing command")]
+		[SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Returned when the command to be patched could not be located by the specified identifier")]
+		[SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Model is properly patched")]
+		[SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Returned when the patch document is not valid")]
+		public ActionResult PatchCommand(int id, JsonPatchDocument<Input.CommandUpdateModel> patchDocument)
 		{
 			// Can we find the command?
-			if( !_dataAccessLayer.LookupCommand(id, out var dataCommand))
+			if (!_dataAccessLayer.LookupCommand(id, out var dataCommand))
 			{
 				return NotFound();
 			}
 
 			// Use the patchDocument and apply changes
-			var commandToPatch = _mapper.Map<CommandUpdateModel>(dataCommand);
+			var commandToPatch = _mapper.Map<Input.CommandUpdateModel>(dataCommand);
 			patchDocument.ApplyTo(commandToPatch, ModelState);
 
-			if( !TryValidateModel(commandToPatch) )
+			if (!TryValidateModel(commandToPatch))
 			{
 				return ValidationProblem(ModelState);
 			}
@@ -103,9 +129,11 @@ namespace Commander.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Returned when the command could not be located by the specified identifier")]
+		[SwaggerResponse((int)HttpStatusCode.OK, Description = "Command is deleted")]
 		public ActionResult Delete(int id)
 		{
-			if( !_service.Delete(id, out var deletedCommand) )
+			if (!_service.Delete(id, out var deletedCommand))
 			{
 				return NotFound();
 			}

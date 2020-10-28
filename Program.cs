@@ -10,7 +10,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Commander
 {
-    public class Program
+#pragma warning disable CS1591
+   public class Program
     {
         public static void Main(string[] args)
         {
@@ -38,4 +39,5 @@ namespace Commander
             return builder;
         }
     }
+#pragma warning restore CS1591
 }

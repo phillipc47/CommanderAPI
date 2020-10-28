@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace Commander.Initializers
 {
@@ -9,7 +10,22 @@ namespace Commander.Initializers
 		{
 			services.AddSwaggerGen(options =>
 			{
-				options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Commander API", Version = "v1" });
+				options.SwaggerDoc("v1", new OpenApiInfo 
+				{
+					Version = "v1", 
+					Title = "Commander API", 
+					Description = "A very simple .NET Core API to store and retrieve common commands",
+					Contact = new OpenApiContact
+					{
+						Name = "Phillip Casey",
+						Email = "noreply@gmail.com",
+					},
+					License = new OpenApiLicense
+					{
+						Name = "Sample License for demonstration purposes"
+					}
+				});
+				options.EnableAnnotations();
 			}
 			);
 		}

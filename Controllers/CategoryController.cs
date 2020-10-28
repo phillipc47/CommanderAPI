@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Output = Commander.Models.External.Output;
-using Input = Commander.Models.External.Input.Category;
 using Commander.Services.Category;
-using Commander.Models.External.Output.Category;
-using Commander.Models.External.Output.Command;
+using Swashbuckle.AspNetCore.Annotations;
+using Input = Commander.Models.External.Input.Category;
+using Output = Commander.Models.External.Output.Category;
 
 namespace Commander.Controllers
 {
@@ -20,7 +20,9 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<CategoryReadModel>> LookupCategories()
+		[SwaggerOperation("Retrieve all categories")]
+		[SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(IEnumerable<Output.CategoryReadModel>))]
+		public ActionResult<IEnumerable<Output.CategoryReadModel>> LookupCategories()
 		{
 			var commandItems = _service.LookupCategories();
 
@@ -28,7 +30,9 @@ namespace Commander.Controllers
 		}
 
 		[HttpGet("{id}", Name = "LookupCategory")]
-		public ActionResult<CommandReadModel> LookupCategory(int id)
+		[SwaggerOperation("Retrieve a category with the specified id")]
+		[SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(Output.CategoryReadModel))]
+		public ActionResult<Output.CategoryReadModel> LookupCategory(int id)
 		{
 			if (_service.LookupCategory(id, out var command))
 			{
@@ -39,9 +43,16 @@ namespace Commander.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult<CategoryReadModel> Add(Input.CategoryCreateModel category)
+		[SwaggerOperation("Creates a new category")]
+		[SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Returned when the create model is not valid")]
+		//TODO: Return Ok with Location
+		[SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Returned when the model is created -- location in header")]
+		public ActionResult<Output.CategoryReadModel> Add(Input.CategoryCreateModel category)
 		{
-			//Basic Validatation happens through Annotations on Create Command Model
+			if( !ModelState.IsValid )
+			{
+				return BadRequest(ModelState);
+			}
 
 			if (!_service.Add(category, out var createdCategory))
 			{
@@ -53,6 +64,9 @@ namespace Commander.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[SwaggerOperation("Delete an existing category")]
+		[SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Returned when the category could not be located by the specified identifier")]
+		[SwaggerResponse((int)HttpStatusCode.OK, Description = "Category is deleted")]
 		public ActionResult Delete(int id)
 		{
 			if (!_service.Delete(id, out var deletedCommand))
@@ -64,8 +78,17 @@ namespace Commander.Controllers
 		}
 
 		[HttpPut("{id}")]
+		[SwaggerOperation("Update an existing category")]
+		[SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Returned when the update model is not valid")]
+		[SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Returned when the category to update could not be located by the specified identifier")]
+		[SwaggerResponse((int)HttpStatusCode.NoContent, Description = "Model is updated")]
 		public ActionResult Update(int id, Input.CategoryUpdateModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
 			if (!_service.Update(id, model))
 			{
 				return NotFound();
